@@ -1,14 +1,23 @@
+import axios from "axios";
 import React, { useState } from "react";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
-    
+  
+    try {
+      const response = await axios.post('http://localhost:3000/login', {
+        email,
+        password,
+      });
+      console.log(response.data.user); 
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  
     // Optional: reset form
     setEmail("");
     setPassword("");
@@ -50,7 +59,7 @@ const LoginPage = () => {
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition duration-300"
           >
-            Sign In
+            Log In
           </button>
         </form>
         <p className="mt-6 text-sm text-center text-gray-600">
