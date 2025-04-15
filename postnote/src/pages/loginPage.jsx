@@ -1,13 +1,18 @@
 import axios from "axios";
 import React, { useState } from "react";
-
+import { useNavigate} from "react-router-dom";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const navigate = useNavigate();
   const submitHandler = async (e) => {
     e.preventDefault();
-  
+
+    localStorage.setItem("email", JSON.stringify(email));
+    localStorage.setItem("isLoggedIn", "true");
+
+    navigate("/project");
+
     try {
       const response = await axios.post('http://localhost:3000/login', {
         email,
@@ -18,7 +23,6 @@ const LoginPage = () => {
       console.error("Login failed:", error);
     }
   
-    // Optional: reset form
     setEmail("");
     setPassword("");
   };
