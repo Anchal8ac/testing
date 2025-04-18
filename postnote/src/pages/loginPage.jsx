@@ -1,31 +1,38 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  
   const submitHandler = async (e) => {
     e.preventDefault();
-
-    localStorage.setItem("email", JSON.stringify(email));
-    localStorage.setItem("isLoggedIn", "true");
-
-    navigate("/project");
-
+  
     try {
       const response = await axios.post('http://localhost:3000/login', {
         email,
         password,
       });
-      console.log(response.data.user); 
+  
+      console.log(response.data.user);
+      alert("Login successfully");
+  
+      localStorage.setItem("email", JSON.stringify(email));
+      localStorage.setItem("isLoggedIn", "true");
+      navigate("/project");
+  
     } catch (error) {
       console.error("Login failed:", error);
+      alert("Invalid email or password");
     }
   
     setEmail("");
     setPassword("");
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -67,7 +74,7 @@ const LoginPage = () => {
           </button>
         </form>
         <p className="mt-6 text-sm text-center text-gray-600">
-          Don’t have an account?{" "}
+          Don't have an account?{" "}
           <a href="/account" className="text-blue-600 hover:underline">Sign up</a>
         </p>
       </div>
