@@ -5,27 +5,33 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const submitHandler = async (e) => {
-    e.preventDefault();
+
+
+ const submitHandler = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await axios.post('http://localhost:3000/login', {
+      email,
+      password,
+    });
+
+    console.log(response.data.user);
+    alert("Login successfully");
 
     localStorage.setItem("email", JSON.stringify(email));
     localStorage.setItem("isLoggedIn", "true");
-
     navigate("/project");
 
-    try {
-      const response = await axios.post('http://localhost:3000/login', {
-        email,
-        password,
-      });
-      console.log(response.data.user); 
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
-  
-    setEmail("");
-    setPassword("");
-  };
+  } catch (error) {
+    console.error("Login failed:", error);
+    alert("Invalid email or password");
+  }
+
+  setEmail("");
+  setPassword("");
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
